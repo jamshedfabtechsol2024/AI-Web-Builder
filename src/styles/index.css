@@ -1,0 +1,527 @@
+@import "tailwindcss";
+
+@source "../node_modules/streamdown/dist/index.js";
+
+/* Dark theme (default) */
+:root {
+  --background: #080808;
+  --foreground: #f5f5f5;
+  --primary: #1e1e1e;
+  --secondary: #2d2d2d;
+  --text: #f5f5f5;
+  --border: #404040;
+  --input: #2d2d2d;
+  --light-white: #cecece;
+  --glassic: #ffffff1f;
+  --light-blue: #1471ec;
+  --blue: #4000ff;
+  --dark-blue: #250193;
+  --gray: #535862;
+
+  /* Additional variables for components */
+  --card-bg: #1e1e1e;
+  --card-border: #404040;
+  --table-header: #212225;
+  --table-row: #15161a;
+  --table-row-hover: #2c2d31;
+  --table-border: #2c2d30;
+  --skeleton: #2c2d31;
+  --separator: #e3e3e3;
+  --price-card-bg: #080808;
+  --price-card-border: #554c4c;
+  --developer-card-bg: #080808;
+  --developer-card-border: #23405c;
+  --button-bg: #0c0c0c;
+  --button-text: #ffffff;
+  --hero-bg: #080d12;
+  --chart-bg: #2d2d2d;
+  --chart-border: #424242;
+
+  /* Keep this for consistent border radius */
+  --radius: 0.625rem;
+}
+
+/* Light theme */
+.light {
+  --background: #ffffff;
+  --foreground: #080808;
+  --primary: #f8f9fa;
+  --secondary: #e9ecef;
+  --text: #212529;
+  --border: #dee2e6;
+  --input: #f8f9fa;
+  --light-white: #6c757d;
+  --glassic: #0000000f;
+  --light-blue: #1471ec;
+  --blue: #4000ff;
+  --dark-blue: #250193;
+  --gray: #6c757d;
+
+  /* Additional variables for components */
+  --card-bg: #ffffff;
+  --card-border: #e9ecef;
+  --table-header: #f8f9fa;
+  --table-row: #ffffff;
+  --table-row-hover: #f8f9fa;
+  --table-border: #dee2e6;
+  --skeleton: #e9ecef;
+  --separator: #dee2e6;
+  --price-card-bg: #f8f9fa;
+  --price-card-border: #e9ecef;
+  --developer-card-bg: #ffffff;
+  --developer-card-border: #e9ecef;
+  --button-bg: #f8f9fa;
+  --button-text: #212529;
+  --hero-bg: #f8f9fa;
+  --chart-bg: #ffffff;
+  --chart-border: #dee2e6;
+}
+
+/* Base styles */
+@layer base {
+  /* Apply color scheme for better accessibility */
+  :root {
+    color-scheme: light dark;
+  }
+
+  /* Reset outline only for interactive elements */
+  button,
+  [role="button"],
+  input,
+  textarea,
+  select {
+    outline: none;
+  }
+
+  /* Body styles */
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: "DM Sans", sans-serif;
+    line-height: 1.5;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  /* Smooth scrolling for the entire page */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .glass-bg {
+    background: rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 44px 44px 0px rgba(0, 0, 0, 0.2);
+  }
+
+  .light .glass-bg {
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0px 44px 44px 0px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Remove Chrome autofill background color */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  box-shadow: 0 0 0 1000px transparent inset;
+  background-color: transparent;
+  border-color: transparent;
+  -webkit-text-fill-color: inherit;
+  caret-color: inherit;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Infinite moving scroller animation */
+@keyframes scroller-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation-name: scroller-scroll;
+  animation-duration: var(--animation-duration, 40s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: var(--animation-direction, reverse);
+  will-change: transform;
+}
+
+/* Mobile sidebar slide-in animation */
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #4000ff 0%, #1471ec 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Partner logos: grayscale by default, color on hover */
+.partner-item img {
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition:
+    filter 200ms ease,
+    opacity 200ms ease;
+}
+
+.partner-item:hover img {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Slim, stylish scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent; /* Firefox thumb and track */
+}
+
+/* Webkit browsers: Chrome, Safari, Opera */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px; /* width of the vertical scrollbar */
+  height: 6px; /* height of the horizontal scrollbar */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent; /* track background */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5); /* scrollbar thumb color */
+  border-radius: 3px; /* rounded edges */
+  border: 1px solid transparent; /* optional: for better spacing */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.7); /* slightly darker on hover */
+}
+
+
+/* Mobile responsiveness for create-project components */
+@media (max-width: 640px) {
+  /* Mobile-specific styles for file tree */
+  .mobile-file-tree {
+    font-size: 0.75rem;
+  }
+
+  /* Mobile-specific styles for editor tabs */
+  .mobile-editor-tabs {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Mobile-specific styles for preview */
+  .mobile-preview {
+    height: calc(100vh - 140px) !important;
+    min-height: 250px !important;
+  }
+
+  /* Mobile-specific styles for Monaco Editor */
+  .monaco-editor {
+    font-size: 11px !important;
+  }
+
+  /* Mobile-specific styles for conversation area */
+  .mobile-conversation {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile-specific styles for prompt input */
+  .mobile-prompt-input {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Tablet responsiveness */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mobile-preview {
+    height: calc(100vh - 120px) !important;
+    min-height: 300px !important;
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shiny-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+/* Fix Streamdown double rendering of code blocks */
+.dark .dark\:hidden {
+  display: none !important;
+}
+:not(.dark) .hidden.dark\:block {
+  display: none !important;
+}
+
+/* AI HTML Content Styling */
+.ai-html-content {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Headings */
+.ai-html-content h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.ai-html-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+}
+
+.ai-html-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem 0;
+  color: var(--text);
+}
+
+.ai-html-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.75rem 0 0.5rem 0;
+  color: var(--text);
+}
+
+/* Paragraphs */
+.ai-html-content p {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.ai-html-content p:first-child {
+  margin-top: 0;
+}
+
+.ai-html-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Text formatting */
+.ai-html-content strong,
+.ai-html-content b {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ai-html-content em,
+.ai-html-content i {
+  font-style: italic;
+  color: var(--text);
+}
+
+.ai-html-content u {
+  text-decoration: underline;
+  color: var(--text);
+}
+
+.ai-html-content span {
+  color: inherit;
+}
+
+/* Line breaks */
+.ai-html-content br {
+  line-height: 1.6;
+}
+
+/* Lists */
+.ai-html-content ul,
+.ai-html-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+  color: var(--text);
+}
+
+.ai-html-content ul {
+  list-style-type: disc;
+}
+
+.ai-html-content ol {
+  list-style-type: decimal;
+}
+
+.ai-html-content li {
+  margin: 0.25rem 0;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.ai-html-content ul ul,
+.ai-html-content ol ol,
+.ai-html-content ul ol,
+.ai-html-content ol ul {
+  margin: 0.25rem 0;
+}
+
+/* Code blocks */
+.ai-html-content pre {
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.ai-html-content pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+}
+
+/* Blockquotes */
+.ai-html-content blockquote {
+  border-left: 4px solid var(--blue);
+  background-color: var(--secondary);
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text);
+  font-style: italic;
+}
+
+.ai-html-content blockquote p {
+  margin: 0;
+}
+
+/* Horizontal rules */
+.ai-html-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+  background: none;
+}
+
+/* Div and section containers */
+.ai-html-content div,
+.ai-html-content section,
+.ai-html-content article {
+  color: var(--text);
+  margin: 0; 
+  padding: 0;
+  
+}
+
+.ai-html-content section {
+  margin: 0 0;
+}
+
+.ai-html-content article {
+  margin:  0;
+  padding: 0;
+}
+
+/* Light theme adjustments */
+.light .ai-html-content h1,
+.light .ai-html-content h2 {
+  border-color: var(--border);
+}
+
+.light .ai-html-content pre {
+  background-color: var(--secondary);
+  border-color: var(--border);
+}
+
+.light .ai-html-content blockquote {
+  background-color: var(--secondary);
+  border-left-color: var(--blue);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .ai-html-content h1 {
+    font-size: 1.25rem;
+    margin: 1rem 0 0.75rem 0;
+  }
+
+  .ai-html-content h2 {
+    font-size: 1.125rem;
+    margin: 1rem 0 0.5rem 0;
+  }
+
+  .ai-html-content h3 {
+    font-size: 1rem;
+    margin: 0.75rem 0 0.5rem 0;
+  }
+
+  .ai-html-content pre {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .ai-html-content ul,
+  .ai-html-content ol {
+    padding-left: 1.25rem;
+  }
+}
